@@ -15,9 +15,10 @@ def theme_css() -> str:
       --bg:#f8fafc;
       --text:#0f172a;
       --muted:#64748b;
-      --line:rgba(148,163,184,.28);
-      --glass:rgba(255,255,255,.55);
-      --glass-soft:rgba(255,255,255,.38);
+      --line:rgba(148,163,184,.22);
+      --glass:rgba(255,255,255,.58);
+      --glass-soft:rgba(255,255,255,.42);
+      --primary:#4f46e5;
       --primary-start:#4f46e5;
       --primary-end:#06b6d4;
     }
@@ -30,28 +31,31 @@ def theme_css() -> str:
     }
     [data-testid="stHeader"]{background:transparent;}
     [data-testid="stSidebar"]{
-      background:rgba(255,255,255,.62);
-      border-right:1px solid rgba(255,255,255,.65);
-      backdrop-filter: blur(12px);
+      background:linear-gradient(180deg, rgba(238,242,255,.88), rgba(248,250,252,.92));
+      border-right:1px solid rgba(148,163,184,.22);
+      backdrop-filter: blur(10px);
     }
     .brand{
       font:600 1.15rem/1.2 Inter,system-ui,sans-serif;
       letter-spacing:.01em;color:var(--text);margin:.1rem 0 .8rem 0;
     }
     .nav-pill{
-      border:1px solid var(--line);
+      border:1px solid transparent;
       border-radius:12px;
-      padding:.45rem .65rem;
-      margin:.3rem 0;
+      padding:.5rem .7rem;
+      margin:.25rem 0;
       font-size:.82rem;
       color:#334155;
-      background:rgba(255,255,255,.54);
+      background:rgba(255,255,255,.45);
+      transition:all .24s ease;
     }
+    .nav-pill:hover{background:rgba(255,255,255,.75);}
     .nav-pill.active{
-      color:white;
-      border-color:transparent;
-      background:linear-gradient(90deg,var(--primary-start),var(--primary-end));
-      box-shadow:0 8px 24px rgba(79,70,229,.24);
+      color:#111827;
+      border-color:rgba(79,70,229,.16);
+      border-left:3px solid var(--primary);
+      background:linear-gradient(90deg,rgba(79,70,229,.12),rgba(6,182,212,.10));
+      box-shadow:0 8px 20px rgba(79,70,229,.12);
     }
     .topbar{
       display:flex;justify-content:space-between;align-items:center;
@@ -72,12 +76,21 @@ def theme_css() -> str:
       box-shadow:0 10px 28px rgba(79,70,229,.27);
       transition:all .25s ease;
     }
+    .btn-primary:hover{transform:translateY(-1px) scale(1.02);filter:brightness(1.04);}
     .hero{
+      position:relative;
       border:1px solid rgba(255,255,255,.75);
       background:var(--glass);
       backdrop-filter: blur(14px);
-      border-radius:20px;padding:1.1rem 1.2rem;margin-bottom:1rem;
+      border-radius:20px;padding:1.35rem 1.3rem 1.4rem 1.3rem;margin-bottom:1.15rem;
       box-shadow:0 18px 50px rgba(15,23,42,.08);
+    }
+    .hero:before{
+      content:"";
+      position:absolute;
+      left:16px;right:16px;top:10px;height:3px;border-radius:999px;
+      background:linear-gradient(90deg,var(--primary-start),var(--primary-end));
+      opacity:.8;
     }
     .hero-kicker{
       display:inline-block;border-radius:999px;padding:.22rem .6rem;
@@ -87,9 +100,9 @@ def theme_css() -> str:
     }
     .hero-title{
       margin:.1rem 0 .4rem 0;
-      font-size:2.1rem;line-height:1.08;font-weight:700;letter-spacing:-.02em;color:#0f172a;
+      font-size:2.45rem;line-height:1.03;font-weight:760;letter-spacing:-.024em;color:#0f172a;
     }
-    .hero-sub{margin:0;color:#475569;font-size:.98rem;}
+    .hero-sub{margin:0;color:#475569;font-size:1rem;max-width:70ch;}
     .card{
       border:1px solid rgba(255,255,255,.75);
       background:var(--glass-soft);
@@ -99,6 +112,14 @@ def theme_css() -> str:
       transition:all .24s ease;
     }
     .card:hover{transform:translateY(-2px);}
+    .card.primary{
+      background:linear-gradient(125deg, rgba(79,70,229,.18), rgba(6,182,212,.16));
+      border-color:rgba(79,70,229,.25);
+      box-shadow:0 18px 36px rgba(79,70,229,.16);
+    }
+    .card.accent{
+      background:linear-gradient(125deg, rgba(56,189,248,.13), rgba(255,255,255,.55));
+    }
     .label{
       color:var(--muted);font-size:.72rem;letter-spacing:.06em;
       text-transform:uppercase;font-weight:600;
@@ -110,7 +131,7 @@ def theme_css() -> str:
       border:1px solid rgba(255,255,255,.75);
       background:var(--glass-soft);
       backdrop-filter: blur(12px);
-      border-radius:16px;padding:.82rem .95rem;
+      border-radius:16px;padding:.95rem 1rem;
       box-shadow:0 12px 30px rgba(15,23,42,.07);
     }
     .section-title{font-size:1.02rem;font-weight:650;color:#0f172a;margin:.1rem 0 .55rem 0;}
@@ -123,18 +144,18 @@ def theme_css() -> str:
     .table-wrap{
       border:1px solid rgba(255,255,255,.75);
       border-radius:16px;background:var(--glass-soft);backdrop-filter:blur(12px);
-      padding:.45rem .55rem .55rem .55rem;overflow:auto;box-shadow:0 12px 30px rgba(15,23,42,.07);
+      padding:.35rem .45rem .45rem .45rem;overflow:auto;box-shadow:0 10px 24px rgba(15,23,42,.06);
     }
     .table-wrap table{width:100%;border-collapse:separate;border-spacing:0;font-size:.84rem;color:#0f172a;}
     .table-wrap thead th{
-      text-align:left;padding:.55rem .5rem;font-size:.70rem;text-transform:uppercase;letter-spacing:.04em;
+      text-align:left;padding:.62rem .56rem;font-size:.69rem;text-transform:uppercase;letter-spacing:.05em;
       color:#334155;background:rgba(255,255,255,.7);border-bottom:1px solid var(--line);
       position:sticky;top:0;
     }
     .table-wrap tbody td{
-      padding:.52rem .5rem;border-bottom:1px solid rgba(148,163,184,.17);white-space:nowrap;font-weight:500;
+      padding:.62rem .56rem;border-bottom:1px solid rgba(148,163,184,.12);white-space:nowrap;font-weight:500;
     }
-    .table-wrap tbody tr:hover{background:rgba(255,255,255,.55);}
+    .table-wrap tbody tr:hover{background:rgba(255,255,255,.68);}
     .status{
       display:inline-block;padding:.18rem .45rem;border-radius:999px;font-size:.72rem;font-weight:600;
       border:1px solid transparent;
@@ -144,7 +165,7 @@ def theme_css() -> str:
     .status-partial{color:#92400e;background:rgba(245,158,11,.14);border-color:rgba(245,158,11,.26);}
     .status-pending{color:#1d4ed8;background:rgba(59,130,246,.12);border-color:rgba(59,130,246,.22);}
     @media (max-width: 900px){
-      .hero-title{font-size:1.7rem;}
+      .hero-title{font-size:1.9rem;}
     }
     </style>
     """
@@ -310,8 +331,8 @@ def main():
     )
 
     m1, m2, m3 = st.columns(3, gap="small")
-    m1.markdown(f'<div class="card"><div class="label">Total Received</div><p class="value">{inr(total_received)}</p></div>', unsafe_allow_html=True)
-    m2.markdown(f'<div class="card"><div class="label">Expected Inflow (Next 7d)</div><p class="value">{inr(expected_7d)}</p></div>', unsafe_allow_html=True)
+    m1.markdown(f'<div class="card primary"><div class="label">Total Received</div><p class="value">{inr(total_received)}</p></div>', unsafe_allow_html=True)
+    m2.markdown(f'<div class="card accent"><div class="label">Expected Inflow (Next 7d)</div><p class="value">{inr(expected_7d)}</p></div>', unsafe_allow_html=True)
     m3.markdown(f'<div class="card"><div class="label">Overdue Amount</div><p class="value">{inr(overdue_amount)}</p></div>', unsafe_allow_html=True)
 
     st.write("")
