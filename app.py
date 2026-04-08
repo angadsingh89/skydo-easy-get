@@ -324,7 +324,7 @@ def main():
         <div class="hero">
           <span class="hero-kicker">Cash Flow Command Center</span>
           <h1 class="hero-title">Know exactly when your export cash lands.</h1>
-          <p class="hero-sub">AI-SaaS style finance cockpit for payment matching, delay monitoring, and short-term inflow visibility.</p>
+          <p class="hero-sub">Smarter visibility into your payments and cash flow</p>
         </div>
         """,
         unsafe_allow_html=True,
