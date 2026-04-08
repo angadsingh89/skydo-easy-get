@@ -7,6 +7,76 @@ import streamlit as st
 
 st.set_page_config(page_title="Smart Cashflow MVP", page_icon=":moneybag:", layout="wide")
 
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background: radial-gradient(circle at top right, #f1f5f9 0%, #f8fafc 40%, #f8fafc 100%);
+    }
+    .hero-wrap {
+        border: 1px solid #e2e8f0;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 1.1rem 1.2rem 1.3rem 1.2rem;
+        box-shadow: 0 14px 40px rgba(15, 23, 42, 0.05);
+    }
+    .hero-top {
+        background: #0f172a;
+        color: #f8fafc;
+        border-radius: 12px;
+        padding: 0.45rem 0.7rem;
+        font-size: 0.78rem;
+        letter-spacing: 0.03em;
+        margin-bottom: 1rem;
+    }
+    .hero-title {
+        font-size: 2.2rem;
+        line-height: 1.1;
+        font-weight: 650;
+        color: #0f172a;
+        margin: 0.2rem 0 0.5rem 0;
+    }
+    .hero-sub {
+        color: #475569;
+        font-size: 1rem;
+        margin-bottom: 0;
+    }
+    .metric-card {
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.88);
+        padding: 0.9rem 1rem;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+    }
+    .metric-label {
+        color: #64748b;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 0.2rem;
+    }
+    .metric-value {
+        color: #0f172a;
+        font-size: 1.8rem;
+        font-weight: 650;
+        margin: 0;
+    }
+    .panel {
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.92);
+        padding: 0.9rem 1rem;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+    }
+    .small-muted {
+        color: #64748b;
+        font-size: 0.8rem;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 
 def inr(value: float) -> str:
     return f"Rs {value:,.0f}"
@@ -181,23 +251,60 @@ def main():
         invoices, payments
     )
 
-    st.markdown("## Smart Cashflow MVP")
-    st.caption("Cash Flow Intelligence for Exporters")
+    st.markdown(
+        """
+        <div class="hero-wrap">
+          <div class="hero-top">Smart Cashflow MVP</div>
+          <div class="hero-title">Know exactly when your export cash lands.</div>
+          <p class="hero-sub">A clean operations cockpit for invoices, payment matching, delayed clients, and expected inflows.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-    left, right = st.columns([2, 1])
+    st.write("")
+    left, right = st.columns([2.2, 1.2], gap="large")
     with left:
-        st.markdown("### Know exactly when your export cash lands")
-        st.write(
-            "A clean operations cockpit for invoices, payment matching, delayed clients, and expected inflows."
+        c1, c2, c3 = st.columns(3, gap="small")
+        c1.markdown(
+            f"""
+            <div class="metric-card">
+              <div class="metric-label">Total Received</div>
+              <p class="metric-value">{inr(total_received)}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
-        c1, c2, c3 = st.columns(3)
-        c1.metric("Total Received", inr(total_received))
-        c2.metric("Expected Inflow (Next 7d)", inr(expected_7d))
-        c3.metric("Overdue Amount", inr(overdue_amount))
+        c2.markdown(
+            f"""
+            <div class="metric-card">
+              <div class="metric-label">Expected Inflow (Next 7d)</div>
+              <p class="metric-value">{inr(expected_7d)}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        c3.markdown(
+            f"""
+            <div class="metric-card">
+              <div class="metric-label">Overdue Amount</div>
+              <p class="metric-value">{inr(overdue_amount)}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
     with right:
-        st.markdown("#### USD/INR Trend")
-        st.metric("Current Rate", "92.53", "+0.84%")
+        st.markdown(
+            """
+            <div class="panel">
+              <div class="metric-label">USD / INR Trend</div>
+              <div style="font-size:1.6rem;font-weight:650;color:#0f172a;">92.53</div>
+              <div class="small-muted">+0.84% this week</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
         forex_chart()
 
     st.markdown("---")
@@ -207,7 +314,7 @@ def main():
     else:
         st.write("No risky clients flagged in current window.")
 
-    col_a, col_b = st.columns(2)
+    col_a, col_b = st.columns(2, gap="large")
     with col_a:
         st.subheader("Invoices")
         invoice_view = invoices[
@@ -215,7 +322,14 @@ def main():
         ].copy()
         invoice_view["amount_paid_base"] = invoice_view["amount_paid_base"].map(inr)
         invoice_view["amount"] = invoice_view["amount"].map(inr)
-        st.dataframe(invoice_view, use_container_width=True, hide_index=True)
+        st.dataframe(
+            invoice_view,
+            use_container_width=True,
+            hide_index=True,
+            column_config={
+                "status": st.column_config.TextColumn("status"),
+            },
+        )
 
     with col_b:
         st.subheader("Payments")
