@@ -103,12 +103,15 @@ def compute_summary(invoices: pd.DataFrame, payments: pd.DataFrame):
     today = date.today()
     total_received = float(payments["net_amount_base"].sum())
 
+    invoices = invoices.copy()
+    invoices["due_date"] = pd.to_datetime(invoices["due_date"])
+    invoices["last_payment_date"] = pd.to_datetime(invoices["last_payment_date"], errors="coerce")
+
     paid = invoices[invoices["status"] == "paid"].copy()
     paid = paid.dropna(subset=["last_payment_date"])
     paid["delay"] = (paid["last_payment_date"] - paid["due_date"]).dt.days
     delay_by_client = paid.groupby("client_name")["delay"].mean().to_dict()
 
-    invoices = invoices.copy()
     invoices["pending_amount"] = invoices["amount"] - invoices["amount_paid_base"]
     invoices["avg_delay"] = invoices["client_name"].map(delay_by_client).fillna(0).clip(lower=0)
     invoices["predicted_payment_date"] = invoices["due_date"] + pd.to_timedelta(
