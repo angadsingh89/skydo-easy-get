@@ -11,17 +11,22 @@ st.markdown(
     """
     <style>
     .stApp {
-        background: radial-gradient(circle at top right, #f1f5f9 0%, #f8fafc 40%, #f8fafc 100%);
+        background:
+            radial-gradient(circle at 12% 8%, rgba(56,189,248,0.25) 0%, rgba(56,189,248,0) 35%),
+            radial-gradient(circle at 85% 15%, rgba(34,197,94,0.20) 0%, rgba(34,197,94,0) 30%),
+            radial-gradient(circle at 55% 80%, rgba(99,102,241,0.20) 0%, rgba(99,102,241,0) 28%),
+            linear-gradient(145deg, #eef2ff 0%, #f8fafc 50%, #eff6ff 100%);
     }
     .hero-wrap {
-        border: 1px solid #e2e8f0;
+        border: 1px solid rgba(255, 255, 255, 0.35);
         border-radius: 20px;
-        background: rgba(255, 255, 255, 0.95);
+        background: rgba(255, 255, 255, 0.45);
+        backdrop-filter: blur(14px);
         padding: 1.1rem 1.2rem 1.3rem 1.2rem;
-        box-shadow: 0 14px 40px rgba(15, 23, 42, 0.05);
+        box-shadow: 0 18px 48px rgba(15, 23, 42, 0.08);
     }
     .hero-top {
-        background: #0f172a;
+        background: rgba(15, 23, 42, 0.9);
         color: #f8fafc;
         border-radius: 12px;
         padding: 0.45rem 0.7rem;
@@ -42,11 +47,12 @@ st.markdown(
         margin-bottom: 0;
     }
     .metric-card {
-        border: 1px solid #e2e8f0;
+        border: 1px solid rgba(255, 255, 255, 0.5);
         border-radius: 16px;
-        background: rgba(255, 255, 255, 0.88);
+        background: rgba(255, 255, 255, 0.38);
+        backdrop-filter: blur(10px);
         padding: 0.9rem 1rem;
-        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
     }
     .metric-label {
         color: #64748b;
@@ -68,11 +74,12 @@ st.markdown(
         margin: 0.4rem 0 0.6rem 0;
     }
     .panel {
-        border: 1px solid #e2e8f0;
+        border: 1px solid rgba(255, 255, 255, 0.5);
         border-radius: 16px;
-        background: rgba(255, 255, 255, 0.92);
+        background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(12px);
         padding: 0.9rem 1rem;
-        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
     }
     .small-muted {
         color: #64748b;
@@ -227,25 +234,56 @@ def forex_chart():
     rates = [88.9, 89.4, 89.1, 90.2, 90.8, 91.7, 91.3, 92.1, 92.53]
     labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "Mon", "Tue"]
     fig = go.Figure()
+
+    for i in range(len(rates) - 1):
+        up = rates[i + 1] >= rates[i]
+        color = "#16a34a" if up else "#dc2626"
+        fig.add_trace(
+            go.Scatter(
+                x=[labels[i], labels[i + 1]],
+                y=[rates[i], rates[i + 1]],
+                mode="lines",
+                line=dict(color=color, width=3),
+                showlegend=False,
+                hovertemplate="USD/INR: %{y}<extra></extra>",
+            )
+        )
+
+    marker_colors = ["#16a34a"]
+    for i in range(1, len(rates)):
+        marker_colors.append("#16a34a" if rates[i] >= rates[i - 1] else "#dc2626")
+
     fig.add_trace(
         go.Scatter(
             x=labels,
             y=rates,
-            mode="lines+markers",
-            line=dict(color="#111827", width=3),
-            marker=dict(size=6, color="#111827"),
-            fill="tozeroy",
-            fillcolor="rgba(17,24,39,0.08)",
-            name="USD/INR",
+            mode="markers",
+            marker=dict(size=7, color=marker_colors, line=dict(color="white", width=1)),
+            showlegend=False,
+            hovertemplate="USD/INR: %{y}<extra></extra>",
         )
     )
+
+    fig.add_trace(
+        go.Scatter(
+            x=labels,
+            y=rates,
+            mode="lines",
+            line=dict(color="rgba(30,41,59,0.15)", width=1),
+            fill="tozeroy",
+            fillcolor="rgba(59,130,246,0.08)",
+            showlegend=False,
+            hoverinfo="skip",
+        )
+    )
+
     fig.update_layout(
         margin=dict(l=10, r=10, t=10, b=10),
         height=190,
-        paper_bgcolor="white",
-        plot_bgcolor="white",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(255,255,255,0.35)",
         xaxis=dict(showgrid=False),
-        yaxis=dict(showgrid=True, gridcolor="#eef2ff"),
+        yaxis=dict(showgrid=True, gridcolor="rgba(148,163,184,0.25)"),
         showlegend=False,
     )
     st.plotly_chart(fig, use_container_width=True)
