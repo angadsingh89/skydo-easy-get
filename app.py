@@ -61,6 +61,12 @@ st.markdown(
         font-weight: 650;
         margin: 0;
     }
+    .section-title {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: #0f172a;
+        margin: 0.4rem 0 0.6rem 0;
+    }
     .panel {
         border: 1px solid #e2e8f0;
         border-radius: 16px;
@@ -235,7 +241,7 @@ def forex_chart():
     )
     fig.update_layout(
         margin=dict(l=10, r=10, t=10, b=10),
-        height=260,
+        height=190,
         paper_bgcolor="white",
         plot_bgcolor="white",
         xaxis=dict(showgrid=False),
@@ -263,51 +269,56 @@ def main():
     )
 
     st.write("")
-    left, right = st.columns([2.2, 1.2], gap="large")
-    with left:
-        c1, c2, c3 = st.columns(3, gap="small")
-        c1.markdown(
-            f"""
-            <div class="metric-card">
-              <div class="metric-label">Total Received</div>
-              <p class="metric-value">{inr(total_received)}</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-        c2.markdown(
-            f"""
-            <div class="metric-card">
-              <div class="metric-label">Expected Inflow (Next 7d)</div>
-              <p class="metric-value">{inr(expected_7d)}</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-        c3.markdown(
-            f"""
-            <div class="metric-card">
-              <div class="metric-label">Overdue Amount</div>
-              <p class="metric-value">{inr(overdue_amount)}</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+    c1, c2, c3 = st.columns(3, gap="small")
+    c1.markdown(
+        f"""
+        <div class="metric-card">
+          <div class="metric-label">Total Received</div>
+          <p class="metric-value">{inr(total_received)}</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    c2.markdown(
+        f"""
+        <div class="metric-card">
+          <div class="metric-label">Expected Inflow (Next 7d)</div>
+          <p class="metric-value">{inr(expected_7d)}</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    c3.markdown(
+        f"""
+        <div class="metric-card">
+          <div class="metric-label">Overdue Amount</div>
+          <p class="metric-value">{inr(overdue_amount)}</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-    with right:
+    st.write("")
+    fx_left, fx_right = st.columns([1.1, 2.3], gap="large")
+    with fx_left:
         st.markdown(
             """
             <div class="panel">
-              <div class="metric-label">USD / INR Trend</div>
-              <div style="font-size:1.6rem;font-weight:650;color:#0f172a;">92.53</div>
-              <div class="small-muted">+0.84% this week</div>
+              <div class="metric-label">USD / INR</div>
+              <div style="font-size:2rem;font-weight:650;color:#0f172a;line-height:1;">92.53</div>
+              <div class="small-muted" style="margin-top:0.4rem;">+0.84% this week</div>
+              <div class="small-muted" style="margin-top:0.6rem;">Indicative live trend for settlement planning.</div>
             </div>
             """,
             unsafe_allow_html=True,
         )
+    with fx_right:
+        st.markdown('<div class="panel">', unsafe_allow_html=True)
+        st.markdown('<div class="section-title">Forex Rate Trend</div>', unsafe_allow_html=True)
         forex_chart()
+        st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown("---")
+    st.write("")
     st.subheader("Delayed / Risky Clients")
     if risky_clients:
         st.write(", ".join(risky_clients))
@@ -326,6 +337,7 @@ def main():
             invoice_view,
             use_container_width=True,
             hide_index=True,
+            height=230,
             column_config={
                 "status": st.column_config.TextColumn("status"),
             },
@@ -337,13 +349,13 @@ def main():
             ["payment_reference", "client_name", "payment_date", "source_currency", "net_amount_base"]
         ].copy()
         payment_view["net_amount_base"] = payment_view["net_amount_base"].map(inr)
-        st.dataframe(payment_view, use_container_width=True, hide_index=True)
+        st.dataframe(payment_view, use_container_width=True, hide_index=True, height=230)
 
     st.subheader("Reconciliation Status")
     rec_view = reconciliation.copy()
     rec_view["matched_amount_base"] = rec_view["matched_amount_base"].map(inr)
     rec_view["delta_amount_base"] = rec_view["delta_amount_base"].map(inr)
-    st.dataframe(rec_view, use_container_width=True, hide_index=True)
+    st.dataframe(rec_view, use_container_width=True, hide_index=True, height=170)
 
 
 if __name__ == "__main__":
