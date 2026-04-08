@@ -10,6 +10,20 @@ st.set_page_config(page_title="Smart Cashflow MVP", page_icon=":moneybag:", layo
 st.markdown(
     """
     <style>
+    .stApp, .stApp p, .stApp span, .stApp div, .stApp label,
+    .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6 {
+        color: #0f172a;
+    }
+    [data-testid="stMarkdownContainer"] p,
+    [data-testid="stMarkdownContainer"] li,
+    [data-testid="stMarkdownContainer"] h1,
+    [data-testid="stMarkdownContainer"] h2,
+    [data-testid="stMarkdownContainer"] h3 {
+        color: #0f172a !important;
+    }
+    [data-testid="stMetricLabel"], [data-testid="stMetricValue"] {
+        color: #0f172a !important;
+    }
     .stApp {
         background:
             radial-gradient(circle at 12% 8%, rgba(56,189,248,0.25) 0%, rgba(56,189,248,0) 35%),
@@ -99,7 +113,7 @@ st.markdown(
         border-collapse: separate;
         border-spacing: 0;
         font-size: 0.86rem;
-        color: #0f172a;
+        color: #0f172a !important;
     }
     .glass-table-wrap thead th {
         position: sticky;
@@ -118,6 +132,8 @@ st.markdown(
         padding: 0.52rem 0.5rem;
         border-bottom: 1px solid rgba(148, 163, 184, 0.16);
         white-space: nowrap;
+        color: #0f172a !important;
+        font-weight: 500;
     }
     .glass-table-wrap tbody tr:hover {
         background: rgba(255, 255, 255, 0.55);
