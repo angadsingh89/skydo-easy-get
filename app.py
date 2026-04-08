@@ -85,6 +85,43 @@ st.markdown(
         color: #64748b;
         font-size: 0.8rem;
     }
+    .glass-table-wrap {
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+        padding: 0.45rem 0.6rem 0.55rem 0.6rem;
+        overflow-x: auto;
+    }
+    .glass-table-wrap table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: 0.86rem;
+        color: #0f172a;
+    }
+    .glass-table-wrap thead th {
+        position: sticky;
+        top: 0;
+        background: rgba(255, 255, 255, 0.7);
+        color: #334155;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        font-size: 0.72rem;
+        font-weight: 600;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+        padding: 0.55rem 0.5rem;
+        text-align: left;
+    }
+    .glass-table-wrap tbody td {
+        padding: 0.52rem 0.5rem;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+        white-space: nowrap;
+    }
+    .glass-table-wrap tbody tr:hover {
+        background: rgba(255, 255, 255, 0.55);
+    }
     </style>
     """,
     unsafe_allow_html=True,
@@ -258,7 +295,7 @@ def forex_chart():
             x=labels,
             y=rates,
             mode="markers",
-            marker=dict(size=7, color=marker_colors, line=dict(color="white", width=1)),
+            marker=dict(size=8, color=marker_colors, line=dict(color="white", width=1.5)),
             showlegend=False,
             hovertemplate="USD/INR: %{y}<extra></extra>",
         )
@@ -269,24 +306,37 @@ def forex_chart():
             x=labels,
             y=rates,
             mode="lines",
-            line=dict(color="rgba(30,41,59,0.15)", width=1),
-            fill="tozeroy",
-            fillcolor="rgba(59,130,246,0.08)",
+            line=dict(color="rgba(30,41,59,0.35)", width=2),
             showlegend=False,
             hoverinfo="skip",
         )
     )
 
+    y_min = min(rates) - 0.7
+    y_max = max(rates) + 0.7
     fig.update_layout(
-        margin=dict(l=10, r=10, t=10, b=10),
-        height=190,
+        margin=dict(l=12, r=12, t=8, b=10),
+        height=165,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(255,255,255,0.35)",
         xaxis=dict(showgrid=False),
-        yaxis=dict(showgrid=True, gridcolor="rgba(148,163,184,0.25)"),
+        yaxis=dict(
+            showgrid=True,
+            gridcolor="rgba(148,163,184,0.25)",
+            range=[y_min, y_max],
+            tickformat=".2f",
+        ),
         showlegend=False,
+        hovermode="x unified",
     )
     st.plotly_chart(fig, use_container_width=True)
+
+
+def render_glass_table(df: pd.DataFrame):
+    st.markdown(
+        f'<div class="glass-table-wrap">{df.to_html(index=False, escape=False)}</div>',
+        unsafe_allow_html=True,
+    )
 
 
 def main():
@@ -369,31 +419,25 @@ def main():
         invoice_view = invoices[
             ["invoice_number", "client_name", "due_date", "status", "amount_paid_base", "amount"]
         ].copy()
+        invoice_view["due_date"] = pd.to_datetime(invoice_view["due_date"]).dt.strftime("%Y-%m-%d")
         invoice_view["amount_paid_base"] = invoice_view["amount_paid_base"].map(inr)
         invoice_view["amount"] = invoice_view["amount"].map(inr)
-        st.dataframe(
-            invoice_view,
-            use_container_width=True,
-            hide_index=True,
-            height=230,
-            column_config={
-                "status": st.column_config.TextColumn("status"),
-            },
-        )
+        render_glass_table(invoice_view)
 
     with col_b:
         st.subheader("Payments")
         payment_view = payments[
             ["payment_reference", "client_name", "payment_date", "source_currency", "net_amount_base"]
         ].copy()
+        payment_view["payment_date"] = pd.to_datetime(payment_view["payment_date"]).dt.strftime("%Y-%m-%d")
         payment_view["net_amount_base"] = payment_view["net_amount_base"].map(inr)
-        st.dataframe(payment_view, use_container_width=True, hide_index=True, height=230)
+        render_glass_table(payment_view)
 
     st.subheader("Reconciliation Status")
     rec_view = reconciliation.copy()
     rec_view["matched_amount_base"] = rec_view["matched_amount_base"].map(inr)
     rec_view["delta_amount_base"] = rec_view["delta_amount_base"].map(inr)
-    st.dataframe(rec_view, use_container_width=True, hide_index=True, height=170)
+    render_glass_table(rec_view)
 
 
 if __name__ == "__main__":
