@@ -12,27 +12,29 @@ def theme_css() -> str:
     return """
     <style>
     :root{
-      --bg:#f8fafc;
-      --text:#0f172a;
-      --muted:#64748b;
-      --line:rgba(148,163,184,.22);
-      --glass:rgba(255,255,255,.58);
-      --glass-soft:rgba(255,255,255,.42);
-      --primary:#4f46e5;
-      --primary-start:#4f46e5;
-      --primary-end:#06b6d4;
+      --bg:#F7F5F2;
+      --bg-soft:#EFEAE4;
+      --text:#1E1E1E;
+      --muted:#5C7A7A;
+      --line:#E8E6E3;
+      --glass:rgba(255,255,255,.68);
+      --glass-soft:rgba(255,255,255,.56);
+      --primary:#2F6F5E;
+      --primary-dark:#285E50;
+      --secondary:#5C7A7A;
+      --accent:#E6C9A8;
     }
     .stApp{
       color:var(--text);
       background:
-        radial-gradient(900px 300px at -5% -10%, rgba(79,70,229,.20), transparent 50%),
-        radial-gradient(700px 260px at 105% 0%, rgba(6,182,212,.16), transparent 45%),
-        linear-gradient(180deg,#f8fbff 0%, #f7faff 35%, #f8fafc 100%);
+        radial-gradient(900px 280px at -8% -10%, rgba(230,201,168,.22), transparent 48%),
+        radial-gradient(700px 240px at 102% 0%, rgba(92,122,122,.10), transparent 45%),
+        linear-gradient(180deg,#F7F5F2 0%, #F4F1EC 45%, #EFEAE4 100%);
     }
     [data-testid="stHeader"]{background:transparent;}
     [data-testid="stSidebar"]{
-      background:linear-gradient(180deg, rgba(238,242,255,.88), rgba(248,250,252,.92));
-      border-right:1px solid rgba(148,163,184,.22);
+      background:linear-gradient(180deg, rgba(239,234,228,.95), rgba(247,245,242,.95));
+      border-right:1px solid var(--line);
       backdrop-filter: blur(10px);
     }
     .brand{
@@ -45,17 +47,17 @@ def theme_css() -> str:
       padding:.5rem .7rem;
       margin:.25rem 0;
       font-size:.82rem;
-      color:#334155;
+      color:#324544;
       background:rgba(255,255,255,.45);
       transition:all .24s ease;
     }
     .nav-pill:hover{background:rgba(255,255,255,.75);}
     .nav-pill.active{
-      color:#111827;
-      border-color:rgba(79,70,229,.16);
+      color:#1E1E1E;
+      border-color:rgba(47,111,94,.18);
       border-left:3px solid var(--primary);
-      background:linear-gradient(90deg,rgba(79,70,229,.12),rgba(6,182,212,.10));
-      box-shadow:0 8px 20px rgba(79,70,229,.12);
+      background:linear-gradient(90deg,rgba(47,111,94,.10),rgba(230,201,168,.18));
+      box-shadow:0 8px 20px rgba(47,111,94,.08);
     }
     .topbar{
       display:flex;justify-content:space-between;align-items:center;
@@ -66,17 +68,17 @@ def theme_css() -> str:
     }
     .badge{
       padding:.24rem .6rem;border-radius:999px;
-      font-size:.74rem;color:#334155;
+      font-size:.74rem;color:#3f4d4d;
       background:rgba(255,255,255,.8);border:1px solid var(--line);
     }
     .btn-primary{
       border:none;border-radius:12px;padding:.52rem .82rem;
       color:white;font-weight:600;font-size:.82rem;
-      background:linear-gradient(90deg,var(--primary-start),var(--primary-end));
-      box-shadow:0 10px 28px rgba(79,70,229,.27);
+      background:var(--primary);
+      box-shadow:0 8px 18px rgba(47,111,94,.16);
       transition:all .25s ease;
     }
-    .btn-primary:hover{transform:translateY(-1px) scale(1.02);filter:brightness(1.04);}
+    .btn-primary:hover{transform:translateY(-1px);background:var(--primary-dark);}
     .hero{
       position:relative;
       border:1px solid rgba(255,255,255,.75);
@@ -89,20 +91,20 @@ def theme_css() -> str:
       content:"";
       position:absolute;
       left:16px;right:16px;top:10px;height:3px;border-radius:999px;
-      background:linear-gradient(90deg,var(--primary-start),var(--primary-end));
+      background:linear-gradient(90deg,var(--primary),var(--accent));
       opacity:.8;
     }
     .hero-kicker{
       display:inline-block;border-radius:999px;padding:.22rem .6rem;
-      font-size:.72rem;color:#312e81;
-      border:1px solid rgba(79,70,229,.22);background:rgba(99,102,241,.11);
+      font-size:.72rem;color:#2F6F5E;
+      border:1px solid rgba(47,111,94,.20);background:rgba(47,111,94,.10);
       margin-bottom:.6rem;
     }
     .hero-title{
       margin:.1rem 0 .4rem 0;
-      font-size:2.45rem;line-height:1.03;font-weight:760;letter-spacing:-.024em;color:#0f172a;
+      font-size:2.35rem;line-height:1.06;font-weight:700;letter-spacing:-.02em;color:#1E1E1E;
     }
-    .hero-sub{margin:0;color:#475569;font-size:1rem;max-width:70ch;}
+    .hero-sub{margin:0;color:#536464;font-size:1rem;max-width:70ch;}
     .card{
       border:1px solid rgba(255,255,255,.75);
       background:var(--glass-soft);
@@ -113,12 +115,12 @@ def theme_css() -> str:
     }
     .card:hover{transform:translateY(-2px);}
     .card.primary{
-      background:linear-gradient(125deg, rgba(79,70,229,.18), rgba(6,182,212,.16));
-      border-color:rgba(79,70,229,.25);
-      box-shadow:0 18px 36px rgba(79,70,229,.16);
+      background:linear-gradient(125deg, rgba(47,111,94,.18), rgba(220,239,232,.85));
+      border-color:rgba(47,111,94,.18);
+      box-shadow:0 14px 26px rgba(47,111,94,.10);
     }
     .card.accent{
-      background:linear-gradient(125deg, rgba(56,189,248,.13), rgba(255,255,255,.55));
+      background:linear-gradient(125deg, rgba(230,201,168,.35), rgba(255,255,255,.70));
     }
     .label{
       color:var(--muted);font-size:.72rem;letter-spacing:.06em;
@@ -139,7 +141,7 @@ def theme_css() -> str:
     .risk-chip{
       display:inline-block;padding:.25rem .62rem;border-radius:999px;
       font-size:.75rem;margin:.2rem .3rem .2rem 0;
-      background:rgba(244,63,94,.12);color:#be123c;border:1px solid rgba(244,63,94,.20);
+      background:rgba(230,201,168,.35);color:#7b4f35;border:1px solid rgba(182,130,97,.24);
     }
     .table-wrap{
       border:1px solid rgba(255,255,255,.75);
@@ -160,10 +162,10 @@ def theme_css() -> str:
       display:inline-block;padding:.18rem .45rem;border-radius:999px;font-size:.72rem;font-weight:600;
       border:1px solid transparent;
     }
-    .status-paid{color:#166534;background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.22);}
-    .status-overdue{color:#b91c1c;background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.22);}
-    .status-partial{color:#92400e;background:rgba(245,158,11,.14);border-color:rgba(245,158,11,.26);}
-    .status-pending{color:#1d4ed8;background:rgba(59,130,246,.12);border-color:rgba(59,130,246,.22);}
+    .status-paid{color:#2f6f5e;background:rgba(47,111,94,.12);border-color:rgba(47,111,94,.20);}
+    .status-overdue{color:#9a4f4a;background:rgba(176,112,94,.14);border-color:rgba(176,112,94,.20);}
+    .status-partial{color:#8a6435;background:rgba(230,201,168,.34);border-color:rgba(196,158,116,.24);}
+    .status-pending{color:#4b6666;background:rgba(92,122,122,.14);border-color:rgba(92,122,122,.20);}
     @media (max-width: 900px){
       .hero-title{font-size:1.9rem;}
     }
@@ -233,7 +235,7 @@ def forex_chart():
     labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "Mon", "Tue"]
     fig = go.Figure()
     for i in range(len(rates) - 1):
-        color = "#16a34a" if rates[i + 1] >= rates[i] else "#ef4444"
+        color = "#2F6F5E" if rates[i + 1] >= rates[i] else "#B0705E"
         fig.add_trace(
             go.Scatter(
                 x=[labels[i], labels[i + 1]],
@@ -244,7 +246,7 @@ def forex_chart():
                 showlegend=False,
             )
         )
-    markers = ["#16a34a"] + ["#16a34a" if rates[i] >= rates[i - 1] else "#ef4444" for i in range(1, len(rates))]
+    markers = ["#2F6F5E"] + ["#2F6F5E" if rates[i] >= rates[i - 1] else "#B0705E" for i in range(1, len(rates))]
     fig.add_trace(
         go.Scatter(
             x=labels,
@@ -260,9 +262,9 @@ def forex_chart():
             x=labels,
             y=rates,
             mode="lines",
-            line=dict(color="rgba(15,23,42,.35)", width=1.8),
+            line=dict(color="rgba(60,76,76,.45)", width=1.8),
             fill="tozeroy",
-            fillcolor="rgba(99,102,241,.08)",
+            fillcolor="rgba(92,122,122,.12)",
             showlegend=False,
             hoverinfo="skip",
         )
@@ -316,7 +318,7 @@ def main():
         st.markdown('<div class="nav-pill">Settings</div>', unsafe_allow_html=True)
 
     st.markdown(
-        '<div class="topbar"><span class="badge">Live • Export Intelligence</span><button class="btn-primary">New Invoice</button></div>',
+        '<div class="topbar"><span class="badge">Live • Export Intelligence</span><button class="btn-primary">Create Invoice</button></div>',
         unsafe_allow_html=True,
     )
     st.markdown(
